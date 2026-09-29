@@ -715,8 +715,9 @@ def _split_glob_pattern(pattern: str) -> Tuple[str, str]:
     if magic_index < 0:
         return '', pattern
 
-    separator_index = max(pattern.rfind('/', 0, magic_index),
-                          pattern.rfind('\\', 0, magic_index))
+    separator_index = max(
+        pattern.rfind('/', 0, magic_index),
+        pattern.rfind('\\', 0, magic_index))
     if separator_index < 0:
         return '', pattern
     if separator_index == 0:
@@ -731,8 +732,10 @@ def _split_glob_pattern(pattern: str) -> Tuple[str, str]:
 
 def _split_glob_path(path: str) -> list:
     """按统一的路径分隔符拆分相对路径。"""
-    return [part for part in path.replace('\\', '/').split('/')
-            if part not in ('', '.')]
+    return [
+        part for part in path.replace('\\', '/').split('/')
+        if part not in ('', '.')
+    ]
 
 
 def _match_glob_path(path: str, pattern: str, recursive: bool) -> bool:
@@ -798,8 +801,8 @@ def iglob(
                                     recursive):
                 continue
             if root:
-                yield join_path(
-                    root, relative_path, backend_args=backend_args)
+                yield str(
+                    join_path(root, relative_path, backend_args=backend_args))
             else:
                 yield relative_path
     except FileNotFoundError:
@@ -816,8 +819,7 @@ def glob(
 
     参数与 :func:`iglob` 相同；结果按后端枚举顺序返回。
     """
-    return list(
-        iglob(pattern, recursive=recursive, backend_args=backend_args))
+    return list(iglob(pattern, recursive=recursive, backend_args=backend_args))
 
 
 def list_dir_or_file(
